@@ -1,4 +1,4 @@
-const cloudinary = require("./config/cloudinary.js");
+const cloudinary = require("../config/cloudinary.js");
 
 const uploadAndGenerateURL = async (imageURL, publicID, width, height, crop) => {
     try {
@@ -17,12 +17,12 @@ const uploadAndGenerateURL = async (imageURL, publicID, width, height, crop) => 
     }   
 }
 
-// const imageURL = "https://tse1.explicit.bing.net/th?id=OIP.H0lvjFSrZcZjnUMk7kSaKgHaLJ";
-// const publicID = "kitten";
+
+module.exports = uploadAndGenerateURL;
+// const imageURL = "C:/Users/Boone/Pictures/animals/sleevecat.jpg";
+// const publicID = "sleeveCat";
 // const width = 200;
 // const height = 200;
 // const crop = "fill";
 
 // uploadAndGenerateURL(imageURL, publicID, width, height, crop);
-
-module.exports = uploadAndGenerateURL;
