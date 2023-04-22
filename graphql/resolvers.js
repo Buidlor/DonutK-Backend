@@ -1,4 +1,5 @@
 const Donut = require('../models/Donutk');
+const uploadAndGenerateURL = require('./uploadAndGenerateURL');
 
 module.exports = {
     Query: {
@@ -22,6 +23,20 @@ module.exports = {
     Mutation: {
         async createDonut(_, { donut }) {
             try {
+                // define the image properties for Cloudinary
+                const imageURL = donut.img;
+                const publicID = `donutk/${donut.name}`;
+                const width = 600;
+                const height = 600;
+                const crop = "fill";
+
+                // upload the image to Cloudinary and get the generated URL
+                const generatedURL = await uploadAndGenerateURL(imageURL, publicID, width, height, crop);
+
+                // replace the image URL with the generated URL
+                donut.img = generatedURL;
+
+                // create the new donut
                 const newDonut = new Donut(donut);
                 const res = await newDonut.save();
                 return res;

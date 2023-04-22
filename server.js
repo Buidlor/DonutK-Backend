@@ -1,9 +1,9 @@
 const {ApolloServer} = require('apollo-server');
 require('dotenv').config();
-const connectDB = require('./db');
-
+const connectDB = require('./config/db');
 const mongoUri = process.env.MONGO_URI;
-const port = process.env.PORT || 3001;
+//const uploadAndGenerateURL = require('./uploadAndGenerateURL');
+
 
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
@@ -13,8 +13,9 @@ const server = new ApolloServer({
 });
 
 connectDB(mongoUri);
+const port = process.env.PORT || 3001;
 
-server.listen({ port: process.env.PORT || 3001 })
-    .then(({ url }) => {
+server.listen(port).then(({ url }) => {
         console.log(`🚀 Server ready at ${url}`);
     });
+
