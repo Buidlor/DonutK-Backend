@@ -20,13 +20,27 @@ const typeDefs = gql`
             ingredients: String,
             qty: Int,
         }
+        type Address {
+            street: String,
+            houseNumber: String,
+            city: String,
+            postalCode: String,
+        }
+        input AddressInput {
+            street: String,
+            houseNumber: String,
+            city: String,
+            postalCode: String,
+        }
+
         type User {
             id: ID!,
             email: String!,
             firstName: String,
             lastName: String,
             createdAt: String!,
-            guest: Boolean!
+            guest: Boolean!,
+            address: Address,
         }
         input UserInput {
             email: String!,
@@ -40,6 +54,10 @@ const typeDefs = gql`
             users: [User],
             user(id: ID!): User,
         }
+        type AuthPayload {
+            user: User!,
+            token: String!,
+        }
         type Mutation {
             createDonut(donut: DonutInput): Donut,
             deleteDonut(id: ID!): Donut,
@@ -50,6 +68,9 @@ const typeDefs = gql`
             updateUser(id: ID!, user: UserInput): User,
             deleteUser(id: ID!): User,
             createGuestUser: User,
+            addAddress(id: ID!, address: AddressInput): User,
+            editUser(id: ID!, user: UserInput): User,
+            loginWithGoogle(googleIdToken: String!): AuthPayload!,
         }
     `;
 

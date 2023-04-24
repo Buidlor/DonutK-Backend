@@ -10,6 +10,7 @@ const DonutSchema = new Schema({
     date: { type: Date, default: Date.now },
     thumbsUp: { type: Number, default: 0 },
     thumbsDown: { type: Number, default: 0 },
+
 });
 
 module.exports = model('Donut', DonutSchema);

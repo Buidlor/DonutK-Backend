@@ -1,5 +1,7 @@
 const Donut = require('../models/Donutk');
 const User = require('../models/Users');
+const jwt = require('jsonwebtoken');
+//const googleAuth = require('../config/googleAuth');
 const uploadAndGenerateURL = require('../Utils/uploadAndGenerateURL');
 
 module.exports = {
@@ -93,7 +95,6 @@ module.exports = {
                     donutToEdit.img = generatedURL;
                 }
 
-
                 donutToEdit.name = donut.name;
                 donutToEdit.description = donut.description;
                 donutToEdit.price = donut.price;
@@ -159,6 +160,48 @@ module.exports = {
 
                 await guestUser.save();
                 return guestUser;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        async editUser(_, { id, user }) {
+            try {
+                const userToEdit = await User.findById(id);
+                userToEdit.email = user.email;
+                userToEdit.firstName = user.firstName;
+                userToEdit.lastName = user.lastName;
+                userToEdit.address = user.address;
+
+                await userToEdit.save();
+                return userToEdit;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        async loginWithGoogle(_, { googleIdToken }) {
+            try {
+                const payload = await verifyGoogleToken(googleIdToken);
+                const email = payload.email;
+                const user = await User.findOneAndDelete({ email});  
+
+                if (!user) {
+                    const newUser = new User({
+                        email,
+                        firstName: payload.given_name,
+                        lastName: payload.family_name,
+
+                    });
+                    await newUser.save();
+                    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                    return {
+                        ...newUser._doc,
+                        id: newUser._id,
+                        token
+                    };
+                } else {
+                    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
+                    return { user, token };
+                }
             } catch (err) {
                 throw new Error(err);
             }
