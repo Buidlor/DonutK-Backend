@@ -1,5 +1,6 @@
 const Donut = require('../models/Donutk');
 const User = require('../models/Users');
+const Order = require('../models/Orders');
 const jwt = require('jsonwebtoken');
 //const googleAuth = require('../config/googleAuth');
 const uploadAndGenerateURL = require('../Utils/uploadAndGenerateURL');
@@ -37,9 +38,43 @@ module.exports = {
             } catch (err) {
                 throw new Error(err);
             }   
-        }
+        },
+        async orders() {
+            try {
+                const orders = await Order.find();
+                return orders;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
+        async order(_, { id }) {
+            try {
+                const order = await Order.findById(id);
+                return order;
+            }catch (err) {
+                throw new Error(err);
+            }
+        },
     },
     Mutation: {
+        async createOrder(_, { order }) {
+            try {
+                const user = await User.findById(order.user);
+
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                const newOrder = new Order({
+                    user: user._id,
+                    donuts: order.donuts,
+                });
+                const res = await newOrder.save();
+                return res;
+            } catch (err) {
+                throw new Error(err);
+            }
+        },
         async createDonut(_, { donut }) {
             try {
                 // define the image properties for Cloudinary
