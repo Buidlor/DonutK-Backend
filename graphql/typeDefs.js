@@ -2,6 +2,7 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
         type Donut {
+            id: ID!,
             name: String,
             img: String,
             description: String,
@@ -47,12 +48,24 @@ const typeDefs = gql`
             firstName: String,
             lastName: String,
         }
+        type Order {
+            id: ID!,
+            user: User!,
+            donuts: [Donut],
+            date: String!,
+        }
+        input OrderInput {
+            user: ID!,
+            donuts: [ID],
+        }
 
         type Query {
             donuts: [Donut],
             donut(id: ID!): Donut,
             users: [User],
             user(id: ID!): User,
+            orders: [Order],
+            order(id: ID!): Order,
         }
         type AuthPayload {
             user: User!,
@@ -71,6 +84,9 @@ const typeDefs = gql`
             addAddress(id: ID!, address: AddressInput): User,
             editUser(id: ID!, user: UserInput): User,
             loginWithGoogle(googleIdToken: String!): AuthPayload!,
+            createOrder(order: OrderInput): Order,
+            deleteOrder(id: ID!): Order,
+            editOrder(id: ID!, order: OrderInput): Order,
         }
     `;
 

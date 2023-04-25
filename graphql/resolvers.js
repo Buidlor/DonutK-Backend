@@ -147,14 +147,11 @@ module.exports = {
         },
         async createGuestUser() {
             try {
-                const guestUserName = `guest_${Date.now()}`;
-                const guestMail = `${guestUserName}@donutk.com`;
-
+                const guestMail = `guest_${Date.now()}@donutk.com`;
                 const guestUser = new User({
-                    username: guestUserName,
                     email: guestMail,
                     guest: true,
-                    firstName: "Guest",
+                    firstName: `guest_${Date.now()}`,
                     lastName: "User"
                 });
 

@@ -12,6 +12,7 @@ const UserSchema = new Schema({
         city: { type: String, required: true },
         postalCode: { type: String, required: true },
     },
+    order: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 });
 
 module.exports = model('User', UserSchema);
