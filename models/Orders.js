@@ -19,7 +19,7 @@ const OrderSchema = new Schema({
             },
         },
     ],
-    createdAt: { type: Date, default: Date.now },
+    date: { type: Date, default: Date.now },
     status: { type: String, default: 'pending' },
 });
 module.exports = model('Order', OrderSchema);

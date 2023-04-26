@@ -51,8 +51,17 @@ const typeDefs = gql`
         type Order {
             id: ID!,
             user: User!,
-            donuts: [Donut],
+            donuts: [OrderedDonut],
             date: String!,
+            status: String!,
+        }
+        type OrderedDonut {
+            product: Donut!,
+            qty: Int!,
+        }
+        input OrderedDonutInput {
+            product: ID!,
+            qty: Int!,
         }
         input OrderInput {
             user: ID!,

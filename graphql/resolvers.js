@@ -2,7 +2,7 @@ const Donut = require('../models/Donutk');
 const User = require('../models/Users');
 const Order = require('../models/Orders');
 const jwt = require('jsonwebtoken');
-//const googleAuth = require('../config/googleAuth');
+const googleAuth = require('../config/googleAuth');
 const uploadAndGenerateURL = require('../Utils/uploadAndGenerateURL');
 
 module.exports = {
@@ -64,7 +64,7 @@ module.exports = {
                 if (!user) {
                     throw new Error('User not found');
                 }
-
+                // Validate donuts existance
                 const newOrder = new Order({
                     user: user._id,
                     donuts: order.donuts,
@@ -212,9 +212,9 @@ module.exports = {
         },
         async loginWithGoogle(_, { googleIdToken }) {
             try {
-                const payload = await verifyGoogleToken(googleIdToken);
+                const payload = await googleAuth(googleIdToken);
                 const email = payload.email;
-                const user = await User.findOneAndDelete({ email});  
+                const user = await User.findOne({ email});  
 
                 if (!user) {
                     const newUser = new User({
