@@ -7,10 +7,10 @@ const UserSchema = new Schema({
     createdAt: { type: Date, default: Date.now },
     guest: { type: Boolean, default: false },
     address: { 
-        street: { type: String, required: true },
-        houseNumber: { type: String, required: true },
-        city: { type: String, required: true },
-        postalCode: { type: String, required: true },
+        street: { type: String, required: false },
+        houseNumber: { type: String, required: false },
+        city: { type: String, required: false },
+        postalCode: { type: String, required: false },
     },
     order: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
 });

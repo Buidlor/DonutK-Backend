@@ -217,6 +217,7 @@ module.exports = {
                 const user = await User.findOne({ email});  
 
                 if (!user) {
+                    console.log("User not found, creating new user");
                     const newUser = new User({
                         email,
                         firstName: payload.given_name,
