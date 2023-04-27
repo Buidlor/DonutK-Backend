@@ -1,9 +1,11 @@
 const { gql } = require('apollo-server');
-const { ObjectIdScalar } = require('graphql-scalars');
+
 
 const typeDefs = gql`
+        scalar ObjectID
+
         type Donut {
-            id: ID!,
+            id: ObjectID!,
             name: String,
             img: String,
             description: String,
@@ -36,7 +38,7 @@ const typeDefs = gql`
         }
 
         type User {
-            id: ID!,
+            id: ObjectID!,
             email: String!,
             firstName: String,
             lastName: String,
@@ -50,7 +52,7 @@ const typeDefs = gql`
             lastName: String,
         }
         type Order {
-            id: ID!,
+            id: ObjectID!,
             user: User!,
             donuts: [OrderedDonut],
             date: String!,
@@ -61,21 +63,21 @@ const typeDefs = gql`
             qty: Int!,
         }
         input OrderedDonutInput {
-            product: ID!,
+            product: ObjectID!,
             qty: Int!,
         }
         input OrderInput {
-            user: ID!,
+            user: ObjectID!,
             donuts: [OrderedDonutInput],
         }
 
         type Query {
             donuts: [Donut],
-            donut(id: ID!): Donut,
+            donut(id: ObjectID!): Donut,
             users: [User],
-            user(id: ID!): User,
+            user(id: ObjectID!): User,
             orders: [Order],
-            order(id: ID!): Order,
+            order(id: ObjectID!): Order,
         }
         type AuthPayload {
             user: User!,
@@ -83,21 +85,21 @@ const typeDefs = gql`
         }
         type Mutation {
             createDonut(donut: DonutInput): Donut,
-            deleteDonut(id: ID!): Donut,
-            editDonut(id: ID!, donut: DonutInput): Donut,
-            thumbsUp(id: ID!): Donut,
-            thumbsDown(id: ID!): Donut,
+            deleteDonut(id: ObjectID!): Donut,
+            editDonut(id: ObjectID!, donut: DonutInput): Donut,
+            thumbsUp(id: ObjectID!): Donut,
+            thumbsDown(id: ObjectID!): Donut,
             createUser(user: UserInput): User,
-            updateUser(id: ID!, user: UserInput): User,
-            deleteUser(id: ID!): User,
+            updateUser(id: ObjectID!, user: UserInput): User,
+            deleteUser(id: ObjectID!): User,
             createGuestUser: User,
-            addAddress(id: ID!, address: AddressInput): User,
-            editUser(id: ID!, user: UserInput): User,
+            addAddress(id: ObjectID!, address: AddressInput): User,
+            editUser(id: ObjectID!, user: UserInput): User,
             loginWithGoogle(googleIdToken: String!): AuthPayload!,
             createOrder(order: OrderInput): Order,
-            deleteOrder(id: ID!): Order,
-            editOrder(id: ID!, order: OrderInput): Order,
+            deleteOrder(id: ObjectID!): Order,
+            editOrder(id: ObjectID!, order: OrderInput): Order,
         }
     `;
 
-module.exports = typeDefs;
+module.exports = typeDefs; 

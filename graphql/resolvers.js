@@ -4,8 +4,30 @@ const Order = require('../models/Orders');
 const jwt = require('jsonwebtoken');
 const googleAuth = require('../config/googleAuth');
 const uploadAndGenerateURL = require('../Utils/uploadAndGenerateURL');
+const { GraphQLScalarType } = require('graphql');
+const { Kind } = require('graphql/language');
 
-module.exports = {
+
+
+const ObjectID = new GraphQLScalarType({
+    name: 'ObjectID',
+    description: 'MongoDB ObjectID scalar type',
+    parseValue(value) {
+      return value;
+    },
+    serialize(value) {
+      return value;
+    },
+    parseLiteral(ast) {
+      if (ast.kind === Kind.STRING) {
+        return ast.value;
+      }
+      return null;
+    },
+  });
+
+const resolvers = {
+    ObjectID  ,
     Query: {
         async donuts() {
             try {
@@ -69,8 +91,13 @@ module.exports = {
                     user: user._id,
                     donuts: order.donuts,
                 });
-                const res = await newOrder.save();
-                return res;
+                const savedOrder = await newOrder.save();
+
+                // Populate the 'user' field with the full user object before returning
+                
+                const populatedOrder = await Order.findById(savedOrder._id).populate('user');
+        
+                return populatedOrder;
             } catch (err) {
                 throw new Error(err);
             }
@@ -241,5 +268,6 @@ module.exports = {
         },
     },
 };
+module.exports = resolvers;
 
 
