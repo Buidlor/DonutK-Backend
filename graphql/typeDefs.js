@@ -1,4 +1,5 @@
 const { gql } = require('apollo-server');
+const { ObjectIdScalar } = require('graphql-scalars');
 
 const typeDefs = gql`
         type Donut {
@@ -65,7 +66,7 @@ const typeDefs = gql`
         }
         input OrderInput {
             user: ID!,
-            donuts: [ID],
+            donuts: [OrderedDonutInput],
         }
 
         type Query {

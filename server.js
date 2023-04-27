@@ -2,7 +2,6 @@ const {ApolloServer} = require('apollo-server');
 require('dotenv').config();
 const connectDB = require('./config/db');
 const mongoUri = process.env.MONGO_URI;
-//const uploadAndGenerateURL = require('./uploadAndGenerateURL');
 
 
 const typeDefs = require('./graphql/typeDefs');
