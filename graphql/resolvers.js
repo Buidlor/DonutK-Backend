@@ -95,7 +95,9 @@ const resolvers = {
 
                 // Populate the 'user' field with the full user object before returning
                 
-                const populatedOrder = await Order.findById(savedOrder._id).populate('user');
+                const populatedOrder = await Order.findById(savedOrder._id)
+                    .populate('user')
+                    .populate("donuts.product");
         
                 return populatedOrder;
             } catch (err) {
