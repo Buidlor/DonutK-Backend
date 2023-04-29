@@ -6,17 +6,17 @@ const googleAuth = require('../config/googleAuth');
 const uploadAndGenerateURL = require('../Utils/uploadAndGenerateURL');
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
-
+const { ObjectId } = require('mongodb');
 
 
 const ObjectID = new GraphQLScalarType({
     name: 'ObjectID',
-    description: 'MongoDB ObjectID scalar type',
+    
     parseValue(value) {
-      return value;
+        return new ObjectId(value);
     },
     serialize(value) {
-      return value;
+        return new ObjectId(value);
     },
     parseLiteral(ast) {
       if (ast.kind === Kind.STRING) {
@@ -27,7 +27,7 @@ const ObjectID = new GraphQLScalarType({
   });
 
 const resolvers = {
-    ObjectID  ,
+    ObjectID ,
     Query: {
         async donuts() {
             try {
