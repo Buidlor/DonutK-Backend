@@ -15,6 +15,7 @@ const typeDefs = `#graphql
             date: String,
             thumbsUp: Int,
             thumbsDown: Int,
+            stripeProductId: String,
         }
         input DonutInput {
             name: String,
@@ -23,6 +24,7 @@ const typeDefs = `#graphql
             price: Float,
             ingredients: String,
             qty: Int,
+            stripeProductId: String,
         }
         type Address {
             street: String,
@@ -72,6 +74,7 @@ const typeDefs = `#graphql
         }
 
         type Query {
+            
             donuts: [Donut],
             donut(id: ObjectID!): Donut,
             users: [User],

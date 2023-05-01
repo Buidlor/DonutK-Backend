@@ -164,6 +164,7 @@ const resolvers = {
                 donutToEdit.price = donut.price;
                 donutToEdit.ingredients = donut.ingredients;
                 donutToEdit.qty = donut.qty;
+                donutToEdit.stripeProductId = donut.stripeProductId;
 
                 await donutToEdit.save();
                 return donutToEdit;
