@@ -9,6 +9,10 @@ require('dotenv').config();
 const connectDB = require('./config/db');
 const mongoUri = process.env.MONGO_URI;
 
+const Stripe = require("stripe");
+const stripe = Stripe(process.env.STRIPE_SECRET);
+const DOMAIN = "http://localhost:5173/";
+
 // The GraphQL schema and resolver map used by ApolloServer
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
@@ -26,8 +30,6 @@ const resolvers = require('./graphql/resolvers');
 
     await server.start();
 
-
-
     app.use(    
         cors(),
         bodyParser.json(),
@@ -36,6 +38,22 @@ const resolvers = require('./graphql/resolvers');
 
     connectDB(mongoUri);
 
+    app.post("/create-checkout-session", async (req, res) => {
+        const session = await stripe.checkout.sessions.create({
+            line_items: [
+            {
+                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                price: 'price_1N1QKaIundI4kMC09L0aXZc8',
+                quantity: 1,
+            },
+        ],
+        mode: 'payment',
+        success_url: `${DOMAIN}?success=true`,
+        cancel_url: `${DOMAIN}?canceled=true`,
+      });
+    
+      res.redirect(303, session.url);
+    });
 
     await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
     console.log(`🚀 Server ready at http://localhost:4000`);
