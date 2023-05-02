@@ -48,13 +48,10 @@ const resolvers = require('./graphql/resolvers');
       
     });
     app.use(expressMiddleware(server));
-
-    await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
+    const port = process.env.PORT || 4000;
+    await new Promise((resolve) => httpServer.listen({ port }, resolve));
     console.log(`🚀 Server ready at http://localhost:4000`);
 })();
 
-// const port = process.env.PORT || 3001;
-// server.listen(port).then(({ url }) => {
-//         console.log(`🚀 Server ready at ${url}`);
-//     });
+
 
