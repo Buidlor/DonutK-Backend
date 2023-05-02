@@ -36,21 +36,16 @@ const resolvers = require('./graphql/resolvers');
     connectDB(mongoUri);
 
     app.post("/create-checkout-session", async (req, res) => {
+        const { line_items } = req.body;
         const session = await stripe.checkout.sessions.create({
-        line_items: [
-            {
-                // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                price: 'price_1N1QKaIundI4kMC09L0aXZc8',
-                quantity: 1,
-            },
-        ],
-        mode: 'payment',
-        success_url: `${DOMAIN}?success=true`,
-        cancel_url: `${DOMAIN}?canceled=true`,
+            line_items, // [{price: 'price_HFb9X9ZJw0jZ1A', quantity: 1}] 
+            mode: 'payment',
+            success_url: `${DOMAIN}?success=true`,
+            cancel_url: `${DOMAIN}?canceled=true`,
       });
      
       res.json({ url: session.url });
-      //res.status(200).json({ url: session.url });
+      
     });
     app.use(expressMiddleware(server));
 
