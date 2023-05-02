@@ -42,6 +42,9 @@ const resolvers = require('./graphql/resolvers');
             mode: 'payment',
             success_url: `${DOMAIN}?success=true`,
             cancel_url: `${DOMAIN}?canceled=true`,
+            shipping_address_collection: {
+                allowed_countries: ['BE'], 
+              },
       });
      
       res.json({ url: session.url });
