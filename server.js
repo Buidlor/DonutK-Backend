@@ -6,7 +6,7 @@ const http = require('http');
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db');
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.LOCAL_MONGO_URI;
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
