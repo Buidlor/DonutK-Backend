@@ -37,6 +37,7 @@ const resolvers = require('./graphql/resolvers');
 
     app.post("/create-checkout-session", async (req, res) => {
         const { line_items } = req.body;
+       
         const session = await stripe.checkout.sessions.create({
             line_items, // [{price: 'price_HFb9X9ZJw0jZ1A', quantity: 1}] 
             mode: 'payment',
