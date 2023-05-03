@@ -41,8 +41,8 @@ const resolvers = require('./graphql/resolvers');
         const session = await stripe.checkout.sessions.create({
             line_items, // [{price: 'price_HFb9X9ZJw0jZ1A', quantity: 1}] 
             mode: 'payment',
-            success_url: `${DOMAIN}/success`,
-            cancel_url: `${DOMAIN}/cancel`,
+            success_url: `${DOMAIN}success`,
+            cancel_url: `${DOMAIN}cancel`,
             shipping_address_collection: {
                 allowed_countries: ['BE'], 
               },
