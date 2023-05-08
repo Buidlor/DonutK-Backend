@@ -7,6 +7,7 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/db');
 const mongoUri = process.env.MONGO_URI;
+const Joi = require('joi'); 
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
@@ -36,19 +37,44 @@ const resolvers = require('./graphql/resolvers');
     connectDB(mongoUri);
 
     app.post("/create-checkout-session", async (req, res) => {
+        // prevent frontend to input wrong data
+        // Define a schema for the request body
+        const schema = Joi.object({
+            line_items: Joi.array()
+            .items(
+                Joi.object({
+                price: Joi.string().required(),
+                quantity: Joi.number().integer().required(),
+                })
+            )
+            .required(),
+        });
+
+        // Validate the request body
+        const { error } = schema.validate(req.body);
+
+        // If the validation fails, send a 400 Bad Request response
+        if (error) {
+            return res.status(400).json({ error: error.details[0].message });
+        }
+
         const { line_items } = req.body;
-       
-        const session = await stripe.checkout.sessions.create({
-            line_items, // [{price: 'price_HFb9X9ZJw0jZ1A', quantity: 1}] 
-            mode: 'payment',
-            success_url: `${DOMAIN}success`,
-            cancel_url: `${DOMAIN}cancel`,
-            shipping_address_collection: {
-                allowed_countries: ['BE'], 
-              },
-      });
-     
-      res.json({ url: session.url });
+        
+        try{
+            const session = await stripe.checkout.sessions.create({
+                line_items, // [{price: 'price_HFb9X9ZJw0jZ1A', quantity: 1}] 
+                mode: 'payment',
+                success_url: `${DOMAIN}success`,
+                cancel_url: `${DOMAIN}cancel`,
+                shipping_address_collection: {
+                    allowed_countries: ['BE'], 
+                  },
+            });
+            res.json({ url: session.url });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json({ error: "Internal server error" });
+        }
       
     });
     app.use(expressMiddleware(server));

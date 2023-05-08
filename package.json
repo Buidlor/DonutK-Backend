@@ -21,6 +21,7 @@
     "google-auth-library": "^8.7.0",
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.21.3",
+    "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.4",
     "nodemon": "^2.0.22",
