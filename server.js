@@ -55,7 +55,8 @@ const resolvers = require('./graphql/resolvers');
 
         // If the validation fails, send a 400 Bad Request response
         if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            console.log('oeps, wrong input ');
+            return res.status(400).json({ error: error.details[0] });
         }
 
         const { line_items } = req.body;
